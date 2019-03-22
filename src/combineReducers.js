@@ -144,7 +144,7 @@ export default function combineReducers(reducers) {
     shapeAssertionError = e
   }
 
-  return function combination(state = {}, action) {
+  return function combination(state = {}, action, fullState) {
     if (shapeAssertionError) {
       throw shapeAssertionError
     }
@@ -167,7 +167,7 @@ export default function combineReducers(reducers) {
       const key = finalReducerKeys[i]
       const reducer = finalReducers[key]
       const previousStateForKey = state[key]
-      const nextStateForKey = reducer(previousStateForKey, action)
+      const nextStateForKey = reducer(previousStateForKey, action, fullState || state)
       if (typeof nextStateForKey === 'undefined') {
         const errorMessage = getUndefinedStateErrorMessage(key, action)
         throw new Error(errorMessage)
